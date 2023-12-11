@@ -22,7 +22,7 @@ from flask import jsonify, request, abort
 from flask import url_for  # noqa: F401 pylint: disable=unused-import
 from service.models import Product
 from service.common import status  # HTTP Status Codes
-from service.models import Products, Category
+from service.models import Product, Category
 from . import app
 
 
@@ -143,7 +143,7 @@ def list_products():
 #
 # PLACE YOUR CODE HERE TO READ A PRODUCT
 #
-@app.route('/products/<int:product_id>', method=["GET"])
+@app.route('/products/<int:product_id>', methods=["GET"])
 def get_products(product_id):
     '''Retrieve a single Product
     This endpoint will return a Product based on its id'''
@@ -196,7 +196,7 @@ def delete_products(product_id):
     app.logger.info(f'Request to delete a product with id {product_id}')
     
     product = Product.find(product_id) # retrieving product
-    if not product:
+    if product:
         product.delete()
 
-    return "", status.HTTP_404_NOT_FOUND
+    return "", status.HTTP_204_NO_CONTENT

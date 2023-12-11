@@ -176,9 +176,9 @@ class TestProductRoutes(TestCase):
         self.assertEqual(data['name'],test_product.name)
     
     def test_get_product_not_found(self):
-        '''Iit should not get a Product that is not found'''
+        '''It should not get a Product that is not found'''
         test_product = 0
-        response = self.client.get(f'{BASE_URL/{test_product}}')
+        response = self.client.get(f'{BASE_URL}/{test_product}')
         self.assertEqual(response.status_code,status.HTTP_404_NOT_FOUND)
         data = response.get_json()
         self.assertIn('was not found',data['message'])
@@ -199,6 +199,7 @@ class TestProductRoutes(TestCase):
         self.assertEqual(data['description'],'something!')
         
     def test_delete_product(self):
+        '''It should delete a product'''
         products = self._create_products(5)
         count = self.get_product_count()
         test_product = products[0]
@@ -242,7 +243,7 @@ class TestProductRoutes(TestCase):
         found_count =len(found)
         logging.debug(f'queried {found_count} products with category = {test_category}')
         
-        response = self.client.get({BASE_URL},  query_string=f'category={test_category.name}')
+        response = self.client.get(BASE_URL, query_string=f'category={test_category.name}')
         self.assertEqual(response.status_code,status.HTTP_200_OK)
         data = response.get_json()
         self.assertEqual(len(data),found_count)
